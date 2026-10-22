@@ -1,5 +1,15 @@
 import { motion } from "motion/react";
 import { photos } from "./photos";
+import zeroIcon from "@/assets/logo-zero.png.asset.json";
+
+function Wordmark() {
+  return (
+    <span className="wordmark" aria-label="1910">
+      <span aria-hidden="true">191</span>
+      <img src={zeroIcon.url} alt="" aria-hidden="true" className="wordmark__zero" />
+    </span>
+  );
+}
 import { MAPS_URL, SocialIcons, WHATSAPP_URL, WhatsAppIcon } from "./links";
 
 const reveal = {
@@ -17,7 +27,7 @@ export function Header() {
           <span className="site-header__mark">
             <img src={photos.logo} alt="" width={64} height={64} />
           </span>
-          <span className="site-header__name">1910</span>
+          <span className="site-header__name"><Wordmark /></span>
         </a>
         <nav className="site-header__nav" aria-label="Seções">
           <a href="#sobre">A casa</a>
@@ -255,7 +265,7 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <div className="container-site site-footer__inner">
-        <div className="site-footer__name">1910</div>
+        <div className="site-footer__name"><Wordmark /></div>
         <p>Fermentação natural e forno a lenha em Blumenau.</p>
         <div className="site-footer__icons">
           <SocialIcons />
@@ -268,13 +278,8 @@ export function Footer() {
 
 export function MobileCta() {
   return (
-    <div className="mobile-cta">
-      <a className="btn btn-brick" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-        <span className="icon-svg" style={{ width: "1.1rem", height: "1.1rem", display: "inline-flex" }}>
-          <WhatsAppIcon />
-        </span>
-        Reservar ou pedir
-      </a>
-    </div>
+    <a className="wa-float" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
+      <WhatsAppIcon />
+    </a>
   );
 }

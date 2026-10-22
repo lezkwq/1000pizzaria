@@ -339,21 +339,27 @@
 .site-footer__icons .icon-link:hover { background: var(--cream); color: var(--brick); }
 .site-footer__small { font-size: 0.85rem; opacity: 0.8; }
 
-/* ---------- Fixed mobile CTA ---------- */
-.mobile-cta {
+/* ---------- Brand wordmark: "191" + logo icon as the zero ---------- */
+.wordmark { display: inline-flex; align-items: center; line-height: 1; }
+.wordmark__zero { height: 0.92em; width: auto; margin-left: 0.04em; }
+
+/* ---------- Floating WhatsApp button ---------- */
+.wa-float {
   position: fixed;
-  inset: auto 0 0 0;
+  right: calc(1rem + env(safe-area-inset-right));
+  bottom: calc(1rem + env(safe-area-inset-bottom));
   z-index: 50;
-  display: flex;
-  gap: 0.6rem;
-  padding: 0.7rem var(--gutter) calc(0.7rem + env(safe-area-inset-bottom));
-  background: var(--ink);
+  width: 3.5rem; height: 3.5rem;
+  display: grid; place-items: center;
+  border-radius: 999px;
+  background: var(--brick);
   color: var(--cream);
+  border: 2px solid var(--cream);
+  box-shadow: 0 10px 24px oklch(0.2 0.05 30 / 0.35);
+  transition: transform 0.2s;
 }
-.mobile-cta .btn { flex: 1; justify-content: center; padding: 0.85rem 1rem; }
-.mobile-cta .icon-link { flex: none; width: 3.1rem; height: 3.1rem; }
-@media (max-width: 899px) { body { padding-bottom: var(--mobile-bar); } }
-@media (min-width: 900px) { .mobile-cta { display: none; } }
+.wa-float:hover { transform: scale(1.06); }
+.wa-float svg { width: 1.6rem; height: 1.6rem; }
 
 /* Desktop: keep the whole hero inside the first screen */
 @media (min-width: 900px) {
