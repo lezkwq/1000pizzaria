@@ -1,42 +1,30 @@
 import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import heroPizza from "@/assets/hero-pizza.png";
+import heroArt from "@/assets/hero-1910.jpg.asset.json";
 import { WHATSAPP_URL } from "./links";
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  // Light depth: pizza moves a bit faster than the number behind it.
-  const pizzaY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -90]);
-  const numberY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 60]);
+  const artY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -70]);
 
   return (
     <section ref={ref} className="hero" id="inicio">
       <div className="container-site hero__stage">
-        <motion.div
-          className="hero__number"
-          style={{ y: numberY }}
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          aria-hidden="true"
-        >
-          1910
-        </motion.div>
-
         <motion.img
-          src={heroPizza}
-          alt="Pizza de fermentação natural saída do forno a lenha"
-          className="hero__pizza"
-          width={773}
-          height={335}
-          style={{ y: pizzaY }}
-          initial={{ opacity: 0, scale: 0.92, rotate: -6 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1], delay: 0.15 }}
+          src={heroArt.url}
+          alt="Logo 1910 com pizza de fermentação natural saída do forno a lenha"
+          className="hero__art"
+          width={941}
+          height={720}
+          style={{ y: artY }}
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1] }}
           fetchPriority="high"
         />
+
 
         <motion.h1
           className="hero__headline"
