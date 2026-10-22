@@ -184,7 +184,7 @@ export function Reviews() {
               key={i}
               className={c.kind === "text" ? "polaroid polaroid--text" : "polaroid"}
               initial={{ opacity: 0, y: 50, rotate: 0 }}
-              whileInView={{ opacity: 1, y: 0, rotate: angles[i % angles.length] }}
+              whileInView={{ opacity: 1, y: 0, rotate: angles[i % angles.length] ?? 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: (i % 3) * 0.08, ease: [0.2, 0.8, 0.2, 1] }}
               whileHover={{ rotate: 0, scale: 1.02 }}
