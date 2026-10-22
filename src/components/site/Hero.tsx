@@ -1,0 +1,75 @@
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import heroPizza from "@/assets/hero-pizza.png";
+import { WHATSAPP_URL } from "./links";
+
+export function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  // Light depth: pizza moves a bit faster than the number behind it.
+  const pizzaY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -90]);
+  const numberY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 60]);
+
+  return (
+    <section ref={ref} className="hero" id="inicio">
+      <div className="container-site hero__stage">
+        <motion.div
+          className="hero__number"
+          style={{ y: numberY }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          aria-hidden="true"
+        >
+          1910
+        </motion.div>
+
+        <motion.img
+          src={heroPizza}
+          alt="Pizza de fermentação natural saída do forno a lenha"
+          className="hero__pizza"
+          width={773}
+          height={335}
+          style={{ y: pizzaY }}
+          initial={{ opacity: 0, scale: 0.92, rotate: -6 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1], delay: 0.15 }}
+          fetchPriority="high"
+        />
+
+        <motion.h1
+          className="hero__headline"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.45 }}
+        >
+          Temos 1910 motivos. <em>Basta um: a pizza.</em>
+        </motion.h1>
+
+        <motion.p
+          className="hero__sub"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, delay: 0.65 }}
+        >
+          Fermentação natural, forno a lenha e dono no salão. Na Velha, em Blumenau.
+        </motion.p>
+
+        <motion.div
+          className="hero__actions"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, delay: 0.8 }}
+        >
+          <a className="btn btn-solid" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+            Reservar ou pedir
+          </a>
+          <a className="btn btn-ghost-light" href="#cardapio">
+            Ver o cardápio
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
