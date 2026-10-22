@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Deck, Scatter, Strip } from "@/components/site/Motion";
 import { Hero } from "@/components/site/Hero";
 import { About, Footer, Header, Menu, MobileCta, Reviews, Visit } from "@/components/site/Sections";
 
@@ -20,9 +21,12 @@ function Index() {
       <Header />
       <main>
         <Hero />
+        <Deck />
         <About />
         <Menu />
+        <Strip />
         <Reviews />
+        <Scatter />
         <Visit />
       </main>
       <Footer />

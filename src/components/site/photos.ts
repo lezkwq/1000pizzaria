@@ -29,3 +29,25 @@ export const photos = {
   brie: brie.url,
   fachada: fachada.url,
 };
+
+import gin from "@/assets/photos/foto-04-coquetel-gin-tonica.jpg.asset.json";
+import oreo from "@/assets/photos/foto-05-pizza-doce-oreo.jpg.asset.json";
+import zucchiniVinho from "@/assets/photos/foto-06-pizza-zucchini-vinho.jpg.asset.json";
+import fachadaLogo from "@/assets/photos/foto-07-fachada-logo-parede.jpg.asset.json";
+import menta from "@/assets/photos/foto-09-coquetel-menta.jpg.asset.json";
+import brie2 from "@/assets/photos/foto-10-pizza-brie-cogumelo-angulo2.jpg.asset.json";
+import morango from "@/assets/photos/foto-15-pizza-doce-morango-cream-cheese.jpg.asset.json";
+import burrataColher from "@/assets/photos/foto-18-pizza-burrata-colher-pesto.jpg.asset.json";
+import letreiro from "@/assets/photos/foto-20-letreiro-parede-pizza-mesa.jpg.asset.json";
+
+export const morePhotos = {
+  gin: gin.url,
+  oreo: oreo.url,
+  zucchiniVinho: zucchiniVinho.url,
+  fachadaLogo: fachadaLogo.url,
+  menta: menta.url,
+  brie2: brie2.url,
+  morango: morango.url,
+  burrataColher: burrataColher.url,
+  letreiro: letreiro.url,
+};
