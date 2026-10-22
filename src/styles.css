@@ -352,8 +352,9 @@
   width: 3.5rem; height: 3.5rem;
   display: grid; place-items: center;
   border-radius: 999px;
-  background: var(--ink);
+  background: var(--brick);
   color: var(--cream);
+  border: 2px solid var(--cream);
   box-shadow: 0 10px 24px oklch(0.2 0.05 30 / 0.35);
   transition: transform 0.2s;
 }
