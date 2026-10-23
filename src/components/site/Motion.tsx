@@ -106,7 +106,7 @@ export function Deck() {
                 <motion.h3
                   key={d.title}
                   className="deck__title"
-                  animate={{ opacity: i === active ? 1 : 0.18, x: i === active ? 0 : -4 }}
+                  animate={{ opacity: i === active ? 1 : 0.18 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {d.title}
