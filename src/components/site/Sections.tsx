@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { photos } from "./photos";
 import zeroIcon from "@/assets/logo-zero.png.asset.json";
@@ -19,7 +20,29 @@ const reveal = {
   transition: { duration: 0.7, ease: "easeOut" as const },
 };
 
+const navLinks: [string, string][] = [
+  ["A casa", "#sobre"],
+  ["Cardápio", "#cardapio"],
+  ["Avaliações", "#avaliacoes"],
+  ["Visite", "#visite"],
+];
+
 export function Header() {
+  const [open, setOpen] = useState(false);
+
+  // Close the mobile menu with Escape and lock page scroll while it is open.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   return (
     <header className="site-header">
       <div className="container-site site-header__inner">
@@ -30,15 +53,27 @@ export function Header() {
           <span className="site-header__name"><Wordmark /></span>
         </a>
         <nav className="site-header__nav" aria-label="Seções">
-          <a href="#sobre">A casa</a>
-          <a href="#cardapio">Cardápio</a>
-          <a href="#avaliacoes">Avaliações</a>
-          <a href="#visite">Visite</a>
+          {navLinks.map(([l, h]) => <a key={h} href={h}>{l}</a>)}
         </nav>
         <div className="site-header__icons">
           <SocialIcons />
         </div>
+        <button
+          type="button"
+          className={open ? "burger is-open" : "burger"}
+          aria-label={open ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span /><span /><span />
+        </button>
       </div>
+      <nav id="mobile-menu" className={open ? "mobile-menu is-open" : "mobile-menu"} aria-label="Menu" aria-hidden={!open}>
+        {navLinks.map(([l, h]) => (
+          <a key={h} href={h} tabIndex={open ? 0 : -1} onClick={() => setOpen(false)}>{l}</a>
+        ))}
+      </nav>
     </header>
   );
 }
