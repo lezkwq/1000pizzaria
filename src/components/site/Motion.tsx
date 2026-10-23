@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import {
+  AnimatePresence,
   motion,
+  useSpring,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
@@ -39,17 +41,27 @@ const deck = [
   },
 ];
 
-const tilt = [-6, 4, -3, 7];
+/* Inclinações discretas: cada foto se endireita ao assumir o topo da pilha. */
+const tilt = [-4, 3, -2, 4];
+const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 function DeckCard({ i, n, progress, img, alt }: { i: number; n: number; progress: MotionValue<number>; img: string; alt: string }) {
-  const start = i / n;
-  const end = (i + 1) / n;
+  const seg = 1 / n;
+  const start = i * seg;            // momento em que esta foto vira a de cima
+  const exitEnd = start + seg;      // momento em que termina de sair
   const last = i === n - 1;
-  const y = useTransform(progress, [start, end], ["0%", last ? "0%" : "-130%"]);
-  const rotate = useTransform(progress, [start, end], [tilt[i] ?? 0, last ? (tilt[i] ?? 0) : -22]);
-  const x = useTransform(progress, [start, end], ["0%", last ? "0%" : "18%"]);
+  const t = tilt[i] ?? 0;
+  // Antes de chegar ao topo: levemente menor e inclinada, sobe aos poucos.
+  // No topo: reta. Saindo: desliza para cima e para o lado, sem arremesso.
+  const enterFrom = Math.max(0, start - seg);
+  const opts = { ease };
+  const y = useTransform(progress, last ? [enterFrom, start] : [enterFrom, start, exitEnd], last ? ["3%", "0%"] : ["3%", "0%", "-112%"], opts);
+  const x = useTransform(progress, last ? [enterFrom, start] : [start, exitEnd], last ? ["0%", "0%"] : ["0%", "10%"], opts);
+  const rotate = useTransform(progress, last ? [enterFrom, start] : [enterFrom, start, exitEnd], last ? [t, 0] : [t, 0, -9], opts);
+  const scale = useTransform(progress, last ? [enterFrom, start] : [enterFrom, start, exitEnd], last ? [0.95, 1] : [0.95, 1, 0.97], opts);
+  const opacity = useTransform(progress, last ? [0, 1] : [start + seg * 0.6, exitEnd], last ? [1, 1] : [1, 0]);
   return (
-    <motion.figure className="deck__card" style={{ y, x, rotate, zIndex: n - i }}>
+    <motion.figure className="deck__card" style={{ y, x, rotate, scale, opacity, zIndex: n - i }}>
       <img src={img} alt={alt} loading="lazy" />
     </motion.figure>
   );
@@ -59,14 +71,18 @@ export function Deck() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  // Mola leve: suaviza rolagens bruscas sem criar atraso perceptível.
+  const smooth = useSpring(scrollYProgress, { stiffness: 140, damping: 28, mass: 0.35, restDelta: 0.0005 });
   const [active, setActive] = useState(0);
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    setActive(Math.min(deck.length - 1, Math.floor(v * deck.length)));
+  useMotionValueEvent(smooth, "change", (v) => {
+    // Troca o texto quando a foto de cima já saiu pela metade: fica sincronizado com a imagem.
+    const next = Math.max(0, Math.min(deck.length - 1, Math.floor(v * deck.length + 0.5)));
+    setActive((prev) => (prev === next ? prev : next));
   });
 
   if (reduce) {
     return (
-      <section className="section deck deck--static">
+      <section className="section deck deck--static" id="por-que">
         <div className="container-site deck__static">
           {deck.map((d) => (
             <figure key={d.title} className="deck__card deck__card--static">
@@ -80,7 +96,7 @@ export function Deck() {
   }
 
   return (
-    <section ref={ref} className="deck" style={{ height: `${deck.length * 85}svh` }}>
+    <section ref={ref} className="deck" id="por-que" style={{ height: `${deck.length * 90}svh` }}>
       <div className="deck__sticky">
         <div className="container-site deck__grid">
           <div className="deck__text">
@@ -91,19 +107,30 @@ export function Deck() {
                   key={d.title}
                   className="deck__title"
                   animate={{ opacity: i === active ? 1 : 0.18 }}
-                  transition={{ duration: 0.35 }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {d.title}
                 </motion.h3>
               ))}
             </div>
-            <motion.p key={active} className="deck__desc" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-              {deck[active].text}
-            </motion.p>
+            <div className="deck__descwrap">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.p
+                  key={active}
+                  className="deck__desc"
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {deck[active]?.text}
+                </motion.p>
+              </AnimatePresence>
+            </div>
           </div>
           <div className="deck__stage">
             {deck.map((d, i) => (
-              <DeckCard key={d.title} i={i} n={deck.length} progress={scrollYProgress} img={d.img} alt={d.alt} />
+              <DeckCard key={d.title} i={i} n={deck.length} progress={smooth} img={d.img} alt={d.alt} />
             ))}
           </div>
         </div>
