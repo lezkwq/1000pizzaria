@@ -123,7 +123,7 @@ export function Deck() {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {deck[active].text}
+                  {deck[active]?.text}
                 </motion.p>
               </AnimatePresence>
             </div>
