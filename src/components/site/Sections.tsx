@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { photos } from "./photos";
-import zeroIcon from "@/assets/logo-zero.png.asset.json";
+import zeroIcon from "@/assets/logo-zero.png";
 
 function Wordmark() {
   return (
     <span className="wordmark" aria-label="1910">
       <span aria-hidden="true">191</span>
-      <img src={zeroIcon.url} alt="" aria-hidden="true" className="wordmark__zero" />
+      <img src={zeroIcon} alt="" aria-hidden="true" className="wordmark__zero" />
     </span>
   );
 }

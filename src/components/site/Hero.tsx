@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import heroArt from "@/assets/hero-1910.jpg.asset.json";
+import heroArt from "@/assets/hero-1910.jpg";
 import { WHATSAPP_URL } from "./links";
 
 export function Hero() {
@@ -13,7 +13,7 @@ export function Hero() {
     <section ref={ref} className="hero" id="inicio">
       <div className="container-site hero__stage">
         <motion.img
-          src={heroArt.url}
+          src={heroArt}
           alt="Logo 1910 com pizza de fermentação natural saída do forno a lenha"
           className="hero__art"
           width={941}
